@@ -42,13 +42,14 @@ ActiveRecord::Schema.define(:version => 20120624231425) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.boolean  "opt_in"
     t.string   "invitation_token",       :limit => 60
     t.datetime "invitation_sent_at"
     t.datetime "invitation_accepted_at"
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
+    t.boolean  "opt_in"
+    t.integer  "depto_id", :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
@@ -62,5 +63,25 @@ ActiveRecord::Schema.define(:version => 20120624231425) do
   end
 
   add_index "users_roles", ["user_id", "role_id"], :name => "index_users_roles_on_user_id_and_role_id"
+
+  create_table "items", :force => true do |t|
+    t.integer "item_id", :null => false
+    t.integer "user_id", :null => false
+    t.integer "depto_id", :null => false
+    t.string "item_name", :default => "", :null => false
+    t.integer "item_price", :null => false
+    t.datetime "item_ini", :null => false
+    t.string "item_description", :default => ""
+  end
+
+  add_index "items", ["item_id"], :unique => true
+
+  create_table "deptos", :force => true do |t|
+    t.integer "depto_id", :null => false
+    t.string "depto_name", :default => "", :null => false
+    t.integer "depto_community"
+  end
+
+  add_index "deptos", ["depto_id"], :unique => true
 
 end

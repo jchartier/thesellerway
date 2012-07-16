@@ -8,7 +8,10 @@ class UsersController < ApplicationController
   end
   
   def show
+    @user_actual = User.find(current_user.id)
     @user = User.find(params[:id])
+    @items = Item.where(:user_id => @user.id)
+    @depto = Depto.where(:depto_id => @user_actual.depto_id)
   end
   
   def invite
