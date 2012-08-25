@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(:version => 20120624231425) do
   create_table "user_vote", :force => true do |t|
     t.integer  "user_id",                             :null => false
     t.integer  "tweet_id",                             :null => false
-    t.boolean  "vote_favor"                            :null => false
+    t.boolean  "vote_favor"
   end
 
   add_index "user_vote", ["user_id", "tweet_id"], :name => "index_user_vote_on_user_vote_id", :unique => true
