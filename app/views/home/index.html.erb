@@ -1,0 +1,319 @@
+
+<body>
+  <h1>What's coming</h1>
+
+  <hr>
+
+  <div class="row-fluid">
+  <% q = 0 %>
+  <% u = 0 %>
+  <% @cubes.each do |i| %>
+
+  <% if !i.cube_out_to_date? %>
+  <% if u==3 %>
+    <div class="row-fluid">
+  <% end %>
+    <div class="well span4">
+      <a href="/topic" class="pull-right vertical" style="margin-top:8px"><i class="icon-chevron-right"></i></a>
+      <h2><%=i.cube_name%></h2>
+      <br>
+
+        <div class="controls">
+          <div class="input-prepend">
+          <span class="add-on">
+            <% if i.cube_account=="" %>
+              <i class="icon-bullhorn"></i>
+            <% else %>
+              <i class="icon-user"></i>
+            <% end %>
+          </span>
+          <span class="add-on" style="width:220px">
+            <% if i.cube_account=="" %>
+              <h5 class="pull-left">Public</h5>
+            <% else %>
+              <h5><a class="pull-left" style="border-radius: 3px 0 0 3px; -webkit-border-radius: 3px 0 0 3px;" href="http://www.twitter.com/<%=i.cube_account%>">@<%=i.cube_account%></a></h5>
+            <% end %>
+          </span>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="input-prepend">
+          <span class="add-on">
+            <i class="icon-calendar"></i>
+          </span>
+          <span class="add-on" style="width:220px">
+            <% if i.cube_date==nil %>
+            <!--
+              <script>
+                  $(function() {
+                  $( "#datepicker<%=q%>" ).datepicker();
+                  });
+              </script>
+              <input type="text" id="datepicker<%=q%>" style="height:10px">
+              <% q = q+1 %>
+            -->
+            <% else %>
+              <h5 class="pull-left"><%=(i.cube_date).to_formatted_s(:long)%></h5>
+              <h6 class="pull-right"><%=(Time.now.utc - i.cube_date)%></h6>
+            <% end %>
+          </span>
+          </div>
+        </div>
+
+        <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+          <script>
+            new TWTR.Widget({
+              version: 2,
+              type: 'search',
+              search: '<%=i.cube_name %> lang:en',
+              interval: 30000,
+              title: '',
+              subject: '',
+              width: 'auto',
+              height: 110,
+              theme: {
+                shell: {
+                  background: '#088ac7',
+                  color: '#ffffff'
+                },
+                tweets: {
+                  background: '#ffffff',
+                  color: '#444444',
+                  links: '#05577a'
+                }
+              },
+            features: {
+              scrollbar: true,
+              loop: false,
+              live: true,
+              behavior: 'all'
+              }
+            }).render().start();
+          </script>
+        </div>
+    <% if u==3 %>
+      </div>
+      <% u = 0 %>
+    <% else %>
+      <% u = u+1 %>
+    <% end %>
+    <% end %>
+  <% end %>
+
+    <% if u==0 %>
+    <div class="row-fluid">
+    <% end %>
+    <div class="well span4">
+    <div style="margin-top:8px">
+      <input id="new_cube_input" placeholder="Add a Cube"></input>
+      <a id="new_cube_button" onclick="cube_it(new_cube_input)" class="btn pull-right"><i id="new_cube_icon" class="icon-circle-arrow-right"></i></a>
+    </div>
+      <br>
+        <div id="new_cube_account"class="controls hide">
+          <div class="input-prepend">
+          <span class="add-on">
+            <i class="icon-user"></i>
+          </span>
+          <span class="add-on" style="width:220px">
+          <h5><a class="pull-left" style="border-radius: 3px 0 0 3px; -webkit-border-radius: 3px 0 0 3px;" href=""></a></h5>
+          </span>
+          </div>
+        </div>
+
+        <div id="new_cube_date" class="controls hide">
+          <div class="input-prepend">
+          <span class="add-on">
+            <i class="icon-calendar"></i>
+          </span>
+          <span class="add-on" style="width:220px">
+          <h5 class="pull-left"></h5>
+          <h6 id="probando" class="pull-right"></h6>
+          </span>
+          </div>
+        </div>
+
+        <script type="text/javascript" charset="utf-8">
+        text_value = "";
+        function cube_it(form){
+          if(form.value==text_value && form.value!=""){
+            $("#probando").text("guardado");
+            text_value = "";
+          }
+          else if(form.value!=text_value && form.value!=""){
+            $("#new_cube_account").show();
+            $("#new_cube_date").show();
+            $("#new_cube_tweets").show();
+            //crear twitter;
+            text_value = form.value;
+            TWTR.search('#hola lang:es').start();
+          }
+          else
+          {
+            $("#new_cube_account").hide();
+            $("#new_cube_date").hide();
+            $("#new_cube_tweets").hide();
+            text_value = "";
+          }
+        }
+        </script>
+        <div id="new_cube_tweets" class="hide">
+        <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+          <script>
+            new TWTR.Widget({
+              version: 2,
+              type: 'search',
+              search: '#Maquinaria lang:es',
+              interval: 30000,
+              title: '',
+              subject: '',
+              width: 'auto',
+              height: 110,
+              theme: {
+                shell: {
+                  background: '#088ac7',
+                  color: '#ffffff'
+                },
+                tweets: {
+                  background: '#ffffff',
+                  color: '#444444',
+                  links: '#05577a'
+                }
+              },
+            features: {
+              scrollbar: true,
+              loop: false,
+              live: true,
+              behavior: 'all'
+              }
+            }).render().start();
+          </script>
+        </div>
+    </div>
+    <% if u==0 %>
+      </div>
+    <% end %>
+
+   
+
+</div>
+  <br>
+  <!--   ********* WHATS OUT ******* -->
+  <h1>What's out</h1>
+  <hr>
+  <div class="row-fluid">
+  <% u = 0 %>
+  <% w = 0 %>
+  <% @cubes.each do |i| %>
+
+  <% if i.cube_out_to_date? %>
+  <% if u==3 %>
+    <div class="row-fluid">
+  <% end %>
+    <div class="well span4">
+      <a href="/topic" class="pull-right vertical" style="margin-top:8px"><i class="icon-chevron-right"></i></a>
+      <h2><%=i.cube_name%></h2>
+      <br>
+
+        <div class="controls">
+          <div class="input-prepend">
+          <span class="add-on">
+            <% if i.cube_account=="" %>
+              <i class="icon-bullhorn"></i>
+            <% else %>
+              <i class="icon-user"></i>
+            <% end %>
+          </span>
+          <span class="add-on" style="width:220px">
+            <% if i.cube_account=="" %>
+              <h5 class="pull-left">Public</h5>
+            <% else %>
+              <h5><a class="pull-left" style="border-radius: 3px 0 0 3px; -webkit-border-radius: 3px 0 0 3px;" href="http://www.twitter.com/<%=i.cube_account%>">@<%=i.cube_account%></a></h5>
+            <% end %>
+          </span>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="input-prepend">
+          <span class="add-on">
+            <i class="icon-calendar"></i>
+          </span>
+          <span class="add-on" style="width:220px">
+            <% if i.cube_date==nil %>
+
+            <% else %>
+              <h5 class="pull-left"><%=Time.now.utc%></h5>
+              <h6 class="pull-right"><%=(Time.now.utc - i.cube_date)%></h6>
+            <% end %>
+          </span>
+          </div>
+        </div>
+
+        <div class="controls">
+      <div class="input-prepend">
+         <span class="add-on">
+            <i class="icon-star"></i>
+          </span>
+          <span class="add-on" style="width:220px">
+         <table cellspacing="5" width="100%">
+            <tr>
+              <td valign="top" width="180">
+              <% z = [1,2,3,4,5] %>
+              <% z.each do |zeta| %>
+                <% if i.cube_rating==zeta %>
+                  <input name="star<%=w%>" type="radio" class="star" checked="checked"/>
+                <% else %>
+                   <input name="star<%=w%>" type="radio" class="star"/>
+                <% end %>
+              <% end %>
+            </td>
+            </tr>
+        </table>
+        </span>
+        </div>
+        </div>
+
+        <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+          <script>
+            new TWTR.Widget({
+              version: 2,
+              type: 'search',
+              search: '<%=i.cube_name %> lang:en',
+              interval: 30000,
+              title: '',
+              subject: '',
+              width: 'auto',
+              height: 110,
+              theme: {
+                shell: {
+                  background: '#088ac7',
+                  color: '#ffffff'
+                },
+                tweets: {
+                  background: '#ffffff',
+                  color: '#444444',
+                  links: '#05577a'
+                }
+              },
+            features: {
+              scrollbar: true,
+              loop: false,
+              live: true,
+              behavior: 'all'
+              }
+            }).render().start();
+          </script>
+        </div>
+    <% if u==3 %>
+      </div>
+      <% u = 0 %>
+    <% else %>
+      <% u = u+1 %>
+    <% end %>
+    <% w = w+1 %>
+    <% end %>
+  <% end %>   
+
+</div>
+</body>

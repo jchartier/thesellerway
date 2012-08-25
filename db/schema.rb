@@ -13,6 +13,48 @@
 
 ActiveRecord::Schema.define(:version => 20120624231425) do
 
+  create_table "cubes", :force => true do |t|
+    t.integer  "cube_id",                             :null => false
+    t.string   "cube_name",        :default => "",    :null => false
+    t.integer  "cube_rating"
+    t.datetime "cube_date"
+    t.string   "cube_lang"
+    t.string   "cube_description", :default => ""
+    t.string   "cube_admin",     :default => ""
+    t.boolean  "cube_out_to_date", :default => false
+  end
+
+  add_index "cubes", ["cube_id"], :name => "index_cubes_on_cube_id", :unique => true
+
+  create_table "follow_user", :force => true do |t|
+    t.integer  "follower_id",                             :null => false
+    t.integer  "following_id",                             :null => false
+  end
+
+  add_index "follow_user", ["follower_id", "following_id"], :name => "index_follow_user_on_follow_user_id", :unique => true
+
+    create_table "follow_cube", :force => true do |t|
+    t.integer  "user_id",                             :null => false
+    t.integer  "cube_id",                             :null => false
+  end
+
+  add_index "follow_cube", ["user_id", "cube_id"], :name => "index_follow_cube_on_follow_cube_id", :unique => true
+
+  create_table "cube_tweet", :force => true do |t|
+    t.integer  "cube_id",                             :null => false
+    t.integer  "tweet_id",                             :null => false
+  end
+
+  add_index "cube_tweet", ["cube_id", "tweet_id"], :name => "index_cube_tweet_on_cube_tweet_id", :unique => true
+
+  create_table "user_vote", :force => true do |t|
+    t.integer  "user_id",                             :null => false
+    t.integer  "tweet_id",                             :null => false
+    t.boolean  "vote_favor"                            :null => false
+  end
+
+  add_index "user_vote", ["user_id", "tweet_id"], :name => "index_user_vote_on_user_vote_id", :unique => true
+
   create_table "roles", :force => true do |t|
     t.string   "name"
     t.integer  "resource_id"
@@ -24,8 +66,20 @@ ActiveRecord::Schema.define(:version => 20120624231425) do
   add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
+  create_table "tweets", :force => true do |t|
+    t.integer  "tweet_id",      :null => false
+    t.integer  "user_id"
+    t.string   "tweet_text",         :null => false, :default => ""
+    t.integer  "tweet_up"
+    t.integer  "tweet_down"
+    t.datetime "tweet_date"
+    t.string   "tweet_owner",         :null => false
+    t.string   "tweet_pic"
+  end
+
+  add_index "tweets", ["tweet_id"], :name => "index_tweets_on_tweet_id", :unique => true
+
   create_table "users", :force => true do |t|
-    t.string   "email",                                :default => "", :null => false
     t.string   "encrypted_password",                   :default => ""
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -37,7 +91,6 @@ ActiveRecord::Schema.define(:version => 20120624231425) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                                           :null => false
     t.datetime "updated_at",                                           :null => false
-    t.string   "name"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
@@ -49,7 +102,11 @@ ActiveRecord::Schema.define(:version => 20120624231425) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.boolean  "opt_in"
-    t.integer  "depto_id", :null => false
+    t.string   "name"
+    t.string   "email",                                :default => "", :null => false
+    t.string   "picture"
+    t.string   "lang"
+    t.boolean  "admin",                      :default => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
@@ -63,25 +120,5 @@ ActiveRecord::Schema.define(:version => 20120624231425) do
   end
 
   add_index "users_roles", ["user_id", "role_id"], :name => "index_users_roles_on_user_id_and_role_id"
-
-  create_table "items", :force => true do |t|
-    t.integer "item_id", :null => false
-    t.integer "user_id", :null => false
-    t.integer "depto_id", :null => false
-    t.string "item_name", :default => "", :null => false
-    t.integer "item_price", :null => false
-    t.datetime "item_ini", :null => false
-    t.string "item_description", :default => ""
-  end
-
-  add_index "items", ["item_id"], :unique => true
-
-  create_table "deptos", :force => true do |t|
-    t.integer "depto_id", :null => false
-    t.string "depto_name", :default => "", :null => false
-    t.integer "depto_community"
-  end
-
-  add_index "deptos", ["depto_id"], :unique => true
 
 end

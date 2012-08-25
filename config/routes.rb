@@ -1,6 +1,9 @@
 RailsPrelaunchSignup::Application.routes.draw do
   authenticated :user do
     root :to => 'home#index'
+    match "/topic" => "home#topic"
+    match "/discover" => "discover#index"
+    match "/calendar" => "calendar#index"
   end
   devise_scope :user do
     root :to => "devise/registrations#new"

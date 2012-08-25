@@ -6,12 +6,9 @@ class UsersController < ApplicationController
     @users = User.all
     @chart = create_chart
   end
-  
+
   def show
-    @user_actual = User.find(current_user.id)
-    @user = User.find(params[:id])
-    @items = Item.where(:user_id => @user.id)
-    @depto = Depto.where(:depto_id => @user_actual.depto_id)
+    @user = User.find(current_user.id)
   end
   
   def invite

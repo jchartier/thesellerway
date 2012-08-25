@@ -5,10 +5,9 @@ class User < ActiveRecord::Base
 
   devise :invitable, :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
-  belongs_to :depto
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :depto_id, :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at, :opt_in
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :confirmed_at, :opt_in
   
   after_create :add_user_to_mailchimp unless Rails.env.test?
   before_destroy :remove_user_from_mailchimp unless Rails.env.test?

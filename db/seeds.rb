@@ -6,18 +6,16 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 puts 'SETTING UP DEFAULT USER LOGIN'
-depto = Depto.create(depto_id: '1', depto_name: 'Vista Arauco 1')
-puts 'New depto created: ' << depto.depto_name
-jorge = User.create! :name => 'Jorge Chartier', :email => 'jorge@example.com', :password => 'please', :password_confirmation => 'please', :confirmed_at => Time.now.utc, :depto_id => '1'
+jorge = User.create! :name => 'Jorge Chartier', :email => 'jorge@example.com', :password => 'please', :password_confirmation => 'please', :confirmed_at => Time.now.utc 
 puts 'New user created: ' << jorge.name
-paula = User.create! :name => 'Paula Larios', :email => 'paula@example.com', :password => 'please', :password_confirmation => 'please', :confirmed_at => Time.now.utc, :depto_id => '1'
+paula = User.create! :name => 'Paula Larios', :email => 'paula@example.com', :password => 'please', :password_confirmation => 'please', :confirmed_at => Time.now.utc
 puts 'New user created: ' << paula.name
 jorge.add_role :admin
-clases = Item.create(item_id: '1', user_id: '1', depto_id: '1', item_name: 'Clases particulares', item_price: '15000', item_ini: Time.now.utc, item_description: 'Clases de matematicas a domicilio')
-puts 'New item created: ' << clases.item_name
-auto = Item.create(item_id: '2', user_id: '1', depto_id: '1', item_name: 'Auto', item_price: '60000000', item_ini: Time.now.utc, item_description: 'Subaru Impreza 2001')
-puts 'New item created: ' << auto.item_name
-joyas = Item.create(item_id: '3', user_id: '2', depto_id: '1', item_name: 'Joyas', item_price: '4000', item_ini: Time.now.utc, item_description: 'Joyas hechas a mano')
-puts 'New item created: ' << joyas.item_name
-guitarra = Item.create(item_id: '4', user_id: '1', depto_id: '1', item_name: 'Guitarra electrica', item_price: '100000', item_ini: Time.now.utc, item_description: 'Guitarra electrica Yamaha')
-puts 'New item created: ' << guitarra.item_name
+iphone5 = Cube.create(cube_id: '1', user_id: '1', cube_name: '#iPhone5', cube_account: 'Apple')
+puts 'New item created: ' << iphone5.cube_name
+lollapaloozacl = Cube.create(cube_id: '2', user_id: '1', cube_name: '#Lollapaloozacl', cube_account: 'Lollapaloozacl')
+puts 'New item created: ' << lollapaloozacl.cube_name
+tomasgonzalez1 = Cube.create(cube_id: '3', user_id: '1', cube_name: '#tomasgonzalez1', cube_account: 'tomasgonzalez1', cube_rating: '5', cube_out_to_date: true)
+puts 'New item created: ' << tomasgonzalez1.cube_name
+simonaCastro = Cube.create(cube_id: '4', user_id: '1', cube_name: '#SimonaCastro', cube_rating: '4', cube_out_to_date: true)
+puts 'New item created: ' << simonaCastro.cube_name
